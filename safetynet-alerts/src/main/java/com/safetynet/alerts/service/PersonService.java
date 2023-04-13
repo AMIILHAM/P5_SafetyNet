@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,8 @@ public class PersonService {
 	private Resource resource;
 
 	private static ObjectMapper objectMapper = new ObjectMapper();
+	
+	
 
 	public List<Person> findAll() {
 		 return getSafetyData().getPersons();
@@ -51,39 +54,47 @@ public class PersonService {
 	}
 	
 	public boolean add(Person person) throws IOException {
-		final SafetyData saftyData = getSafetyData();
-		List<Person> persons = saftyData.getPersons();
+		final SafetyData safetyData = getSafetyData();
+		List<Person> persons = safetyData.getPersons();
 		if (persons == null) {
 			persons = new ArrayList<>();
 		}
 		persons.add(person);
-		saftyData.setPersons(persons);
+		safetyData.setPersons(persons);
 		
 		// save dans le fichier JSON
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource("safetyAlertsData.json").getFile());
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-		writer.write(objectMapper.writeValueAsString(saftyData));
+		writer.write(objectMapper.writeValueAsString(safetyData));
 		writer.close();
 		
 		return true;
 	}
 	
-	public Person findOne(String firstName, String lastName) {
-		final List<Person> allPersons = findAll();
-		if (allPersons == null || allPersons.isEmpty()) {
-			return null;
-		}
-		return allPersons
-				.stream() // java stream pour boucler sur une liste
-				.filter(person -> firstName.equalsIgnoreCase(person.getFirstName())
-				&& lastName.equalsIgnoreCase(person.getLastName()))
-				.findFirst()
-				.orElse(null);
-	
+
 		
-	}
 	
+	public boolean updatePerson( Person personToUpdate) {
+		final SafetyData safetyData = getSafetyData();
+		final List<Person> persons = safetyData.getPersons(); 
+        boolean isUpdated = false;
+
+        for (Person personList : persons) {
+            if (personList.getFirstName().equals(personToUpdate.getFirstName())
+                    && personList.getLastName()
+                    .equals(personToUpdate.getLastName())) {
+                personList.setAddress(personToUpdate.getAddress());
+                personList.setCity(personToUpdate.getCity());
+                personList.setZip(personToUpdate.getZip());
+                personList.setPhone(personToUpdate.getPhone());
+                personList.setEmail(personToUpdate.getEmail());
+                safetyData.setPersons(persons);
+                isUpdated = true;
+            }
+        }
+        return isUpdated;
+    }
 
 	public boolean delete(String firstName, String lastName) throws JsonProcessingException, IOException {
 		final SafetyData saftyData = getSafetyData();
