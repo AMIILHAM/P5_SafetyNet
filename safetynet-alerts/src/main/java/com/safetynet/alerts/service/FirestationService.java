@@ -1,118 +1,107 @@
+package com.safetynet.alerts.service;
 
-	package com.safetynet.alerts.service;
+import java.util.Map;
+import java.util.Map.Entry;
 
-	import java.io.BufferedWriter;
-	import java.io.File;
-	import java.io.FileWriter;
-	import java.io.IOException;
-	import java.io.InputStreamReader;
-	import java.io.Reader;
-	import java.io.UncheckedIOException;
-	import java.util.ArrayList;
-	import java.util.List;
-	import java.util.stream.Collectors;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-	import org.springframework.beans.factory.annotation.Value;
-	import org.springframework.core.io.Resource;
-	import org.springframework.stereotype.Service;
-	import org.springframework.util.FileCopyUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
-	import com.fasterxml.jackson.core.JsonProcessingException;
-	import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Service;
+
+	
 import com.safetynet.alerts.model.Firestation;
-import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.SafetyData;
 
-	@Service
-
-     public class FirestationService {
-
-		
-
-		@Value("classpath:safetyAlertsData.json")
-		private Resource resource;
-
-		private static ObjectMapper objectMapper = new ObjectMapper();
-
-		public List<Firestation> findAll() {
-			 return getSafetyData().getFirestations();
-		}
-
-		private SafetyData getSafetyData() {
-			try (Reader reader = new InputStreamReader(resource.getInputStream())) {
-				String elementsAsString = FileCopyUtils.copyToString(reader);
-				// deserialisation avec jackson
-				SafetyData safetyData = objectMapper.readValue(elementsAsString, SafetyData.class);
-				
-				if(safetyData == null) {
-					return new SafetyData();
-				}
-				return safetyData;
-			} catch (IOException e) {
-				throw new UncheckedIOException(e);
-			}
-		}
-		
-		public boolean add(Firestation firestation) throws IOException {
-			final SafetyData saftyData = getSafetyData();
-			List<Firestation> Firestations = saftyData.getFirestations();
-			if (Firestations == null) {
-				Firestations = new ArrayList<>();
-			}
-			Firestations.add(firestation);
-			saftyData.setFirestations(Firestations);
-			
-			// save dans le fichier JSON
-			ClassLoader classLoader = getClass().getClassLoader();
-			File file = new File(classLoader.getResource("safetyAlertsData.json").getFile());
-			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-			writer.write(objectMapper.writeValueAsString(saftyData));
-			writer.close();
-			
-			return true;
-		}
-		public Firestation findOne(String address, String station) {
-			final List<Firestation> allFirestation = findAll();
-			if (allFirestation == null || allFirestation.isEmpty()) {
-				return null;
-			}
-			return allFirestation
-					.stream() // java stream pour boucler sur une liste
-					.filter(firestation -> address.equalsIgnoreCase(firestation.getAddress())
-					&& station.equalsIgnoreCase(firestation.getStation()))
-					.findFirst()
-					.orElse(null);
-		
-			
-		}
 
 
+@Service
+public class FirestationService  {
 
-		public boolean delete(String address, String station) throws JsonProcessingException, IOException {
-			final SafetyData saftyData = getSafetyData();
-			List<Firestation> firestations = saftyData.getFirestations();
-			if (firestations == null) {
-				firestations = new ArrayList<>();
-			}
-			
-			List<Firestation> newFirestation = firestations.stream() // java stream pour boucler sur une liste
-			.filter(firestation -> !address.equalsIgnoreCase(firestation.getAddress()) // éliminer la personne qui match
-					&&!station.equalsIgnoreCase(firestation.getStation()))	
-			.collect(Collectors.toList());
-			
-			saftyData.setFirestations(newFirestation); // remettre la liste des personnes modifiées dans l'objet safetyData
-			
-			// save dans le fichier JSON
-			ClassLoader classLoader = getClass().getClassLoader();
-			File file = new File(classLoader.getResource("safetyAlertsData.json").getFile());
-			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-			writer.write(objectMapper.writeValueAsString(saftyData));
-			writer.close();
-			
-			return true;
-		}
-		}
+    private static final Logger logger = LogManager.getLogger(FirestationService.class);
 
+    
+    @Autowired
+    private SafetyData safetyData;
 
+    /**
+     * Create new firestation number/address
+     
+     * @return isAdded boolean
+     */
+    public boolean addAddressForFirestation(final Map<String, String> firestationMappingToCreate) {
 
+        try {
+            Map<String, Firestation> allFirestationsMapping = safetyData.getFirestations();
+            String newAddress = firestationMappingToCreate.get("address");
+            Firestation firestationRecovered = allFirestationsMapping.get(firestationMappingToCreate.get("station"));
 
+            for (Entry<String, Firestation> entry : allFirestationsMapping.entrySet()) {
+                Firestation firestationsNumber = entry.getValue();
+
+                
+            }
+            firestationRecovered.addAddress(newAddress);
+            return true;
+        } catch (NullPointerException np) {
+            throw new NullPointerException("NPE - Verify station number" + np);
+        }
+    }
+
+    /**
+     * Update existing address 
+     
+     */
+    public boolean updateAddressForFirestation(final Map<String, String> firestationMapCreate) {
+
+        try {
+            Map<String, Firestation> allFirestationsMapping = safetyData.getFirestations();
+            String address = firestationMapCreate.get("address");
+            Firestation firestationNumberRecovered = allFirestationsMapping.get(firestationMapCreate.get("station"));
+
+            for (Entry<String, Firestation> entry : allFirestationsMapping.entrySet()) {
+                Firestation firestationsNumber = entry.getValue();
+
+                // 1 - Verifie adresse existante
+                // 2 - Delete addresse attribuee a une autre station
+                // 3 - MAJ adresse avec l'autre station
+                if (firestationsNumber.getAddresses().toString().contains(address)) {
+                    firestationsNumber.getAddresses().remove(address);
+                    firestationNumberRecovered.addAddress(address);
+                    return true;
+                }
+            }
+            logger.error("Address enter : {} does not exist.",
+                    firestationMapCreate.values());
+            return false;
+        } catch (NullPointerException np) {
+            throw new NullPointerException("NPE - Please verify the number station " + np);
+        }
+    }
+
+    /**
+     * Delete existing address / update the address/station
+     *
+     * @param address String
+     * @return isDeleted boolean
+     */
+    public boolean deleteAddressForFirestation(final String address) {
+        Map<String, Firestation> allFirestationsMapping = safetyData
+                .getFirestations();
+
+        for (Entry<String, Firestation> entry : allFirestationsMapping
+                .entrySet()) {
+            Firestation firestationsNumber = entry.getValue();
+
+            if (firestationsNumber.getAddresses().toString().contains(address)) {
+                firestationsNumber.getAddresses().remove(address);
+                return true;
+            }
+        }
+        logger.error("Address entered : {} not exist.", address);
+        return false;
+    }
+
+   
+    }

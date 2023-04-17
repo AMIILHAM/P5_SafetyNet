@@ -1,24 +1,16 @@
 package com.safetynet.alerts.service;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.SafetyData;
 
@@ -26,58 +18,30 @@ import com.safetynet.alerts.model.SafetyData;
 public class PersonService {
 
 	
-
-	@Value("classpath:safetyAlertsData.json")
-	private Resource resource;
-
-	private static ObjectMapper objectMapper = new ObjectMapper();
+	@Autowired
+    private SafetyData safetyData;
 	
-	
+	public Person addPerson(final Map<String, String> personToCreate) {
+		
+		
 
-	public List<Person> findAll() {
-		 return getSafetyData().getPersons();
+        
+        Person newPerson = new Person(personToCreate.get("firstName"),
+                personToCreate.get("lastName"),
+                personToCreate.get("address"), personToCreate.get("city"),
+                personToCreate.get("zip"),
+                personToCreate.get("phone"),
+                personToCreate.get("email"));
+        List<Person> personsList = safetyData.getPersons();
+        personsList.add(newPerson);
+		return newPerson;
+        
 	}
 
-	private SafetyData getSafetyData() {
-		try (Reader reader = new InputStreamReader(resource.getInputStream())) {
-			String elementsAsString = FileCopyUtils.copyToString(reader);
-			// deserialisation avec jackson
-			SafetyData safetyData = objectMapper.readValue(elementsAsString, SafetyData.class);
-			
-			if(safetyData == null) {
-				return new SafetyData();
-			}
-			return safetyData;
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
-		}
-	}
-	
-	public boolean add(Person person) throws IOException {
-		final SafetyData safetyData = getSafetyData();
-		List<Person> persons = safetyData.getPersons();
-		if (persons == null) {
-			persons = new ArrayList<>();
-		}
-		persons.add(person);
-		safetyData.setPersons(persons);
-		
-		// save dans le fichier JSON
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource("safetyAlertsData.json").getFile());
-		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-		writer.write(objectMapper.writeValueAsString(safetyData));
-		writer.close();
-		
-		return true;
-	}
-	
-
-		
 	
 	public boolean updatePerson( Person personToUpdate) {
-		final SafetyData safetyData = getSafetyData();
-		final List<Person> persons = safetyData.getPersons(); 
+		
+		 List<Person> persons = safetyData.getPersons(); 
         boolean isUpdated = false;
 
         for (Person personList : persons) {
@@ -89,33 +53,29 @@ public class PersonService {
                 personList.setZip(personToUpdate.getZip());
                 personList.setPhone(personToUpdate.getPhone());
                 personList.setEmail(personToUpdate.getEmail());
-                safetyData.setPersons(persons);
+               
                 isUpdated = true;
             }
         }
+        safetyData.setPersons(persons);
         return isUpdated;
     }
 
-	public boolean delete(String firstName, String lastName) throws JsonProcessingException, IOException {
-		final SafetyData saftyData = getSafetyData();
-		List<Person> persons = saftyData.getPersons();
+	public boolean delete(Person personToDeleted) throws JsonProcessingException, IOException {
+
+		List<Person> persons = safetyData.getPersons();
 		if (persons == null) {
 			persons = new ArrayList<>();
 		}
 		
 		List<Person> newPersons = persons.stream() // java stream pour boucler sur une liste
-		.filter(person -> !firstName.equalsIgnoreCase(person.getFirstName()) // éliminer la personne qui match
-		&& !lastName.equalsIgnoreCase(person.getLastName()))	
+		.filter(person -> !personToDeleted.getFirstName().equalsIgnoreCase(person.getFirstName()) // éliminer la personne qui match
+		&& !personToDeleted.getLastName().equalsIgnoreCase(person.getLastName()))	
 		.collect(Collectors.toList());
 		
-		saftyData.setPersons(newPersons); // remettre la liste des personnes modifiées dans l'objet safetyData
+		safetyData.setPersons(newPersons); // remettre la liste des personnes modifiées dans l'objet safetyData
 		
-		// save dans le fichier JSON
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource("safetyAlertsData.json").getFile());
-		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-		writer.write(objectMapper.writeValueAsString(saftyData));
-		writer.close();
+		
 		
 		return true;
 	}

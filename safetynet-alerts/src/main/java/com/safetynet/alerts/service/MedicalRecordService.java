@@ -1,100 +1,106 @@
 package com.safetynet.alerts.service;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UncheckedIOException;
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.safetynet.alerts.model.MedicalRecord;
+import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.SafetyData;
 
 @Service
 public class MedicalRecordService {
+	
+
+	    private static final Logger logger = LogManager.getLogger(MedicalRecordService.class);
+
+	    /**
+	     * safetyData for retrieve informations
+	     */
+	    @Autowired
+	    private SafetyData safetyData;
+
+	    /**
+	     * Create new MedicalRecord for existing person without MedicalRecord
+	     *
+	    
+	     * @return MedicalRecord | NULL
+	     */
+	    public MedicalRecord createMedicalRecord(
+	            final MedicalRecord newMedicalRecord) {
+
+	        List<Person> personsList = safetyData.getPersons();
+
+	        // creer medicalrecord pour une personne sans
+	        for (Person existingPerson : personsList) {
+	            if (existingPerson.getFirstName().equalsIgnoreCase(newMedicalRecord.getFirstName().toUpperCase())
+	                    && existingPerson.getLastName().equalsIgnoreCase(
+	                    newMedicalRecord.getLastName().toUpperCase())
+	                    && existingPerson.getMedicalRecord() == null) {
+	                existingPerson.setMedicalRecord(newMedicalRecord);
+	                return newMedicalRecord;
+	            }
+	        }
+	        logger.error("Error create the MedicalRecord : {} {}, "
+	                        + "already existant", newMedicalRecord.getFirstName(), newMedicalRecord.getLastName());
+	        return null;
+	    }
+
+	    /**
+	     * Update MedicalRecord
+	     *
+	     * @param medicalRecord MedicalRecord
+	     * @return boolean isUpdated
+	     */
+	    public boolean updateMedicalRecord(final MedicalRecord medicalRecord) {
+	        boolean isUpdated = false;
+	        List<Person> personsList = safetyData.getPersons();
+
+	        // For update an existing person's medicalrecord.
+	        for (Person existingPerson : personsList) {
+	            if (existingPerson.getMedicalRecord() != null
+	                    && existingPerson.getFirstName().equalsIgnoreCase(
+	                    medicalRecord.getFirstName().toUpperCase())
+	                    && existingPerson.getLastName().equalsIgnoreCase(
+	                    medicalRecord.getLastName().toUpperCase())) {
+	                existingPerson.setMedicalRecord(medicalRecord);
+	                isUpdated = true;
+	            }
+	        }
+	        return isUpdated;
+	    }
+
+	    /**
+	     * Delete MedicalRecord
+	     *
+	     * @param firstName String
+	     * @param lastName String
+	     * @return boolean isDeleted
+	     */
+	    public boolean deleteMedicalRecord(final String firstName, final String lastName) {
+
+	        boolean isDeleted = false;
+	        List<Person> personsList = safetyData.getPersons();
+
+	        // delete le dossier d'une personne
+	        for (Person existingPerson : personsList) {
+	            if (existingPerson.getMedicalRecord() != null
+	                    && existingPerson.getFirstName().equalsIgnoreCase(firstName.toUpperCase())
+	                    && existingPerson.getLastName().equalsIgnoreCase(lastName.toUpperCase())) {
+	                existingPerson.setMedicalRecord(null);
+	                isDeleted = true;
+	            }
+	        }
+	        return isDeleted;
+	    }
+	}
+	
 
 	
 
-	@Value("classpath:safetyAlertsData.json")
-	private Resource resource;
-
-	private static ObjectMapper objectMapper = new ObjectMapper();
-
-	public List<MedicalRecord> findAll() {
-		 return getSafetyData().getMedicalRecords();
-	}
-
-	private SafetyData getSafetyData() {
-		try (Reader reader = new InputStreamReader(resource.getInputStream())) {
-			String elementsAsString = FileCopyUtils.copyToString(reader);
-			// deserialisation avec jackson
-			SafetyData safetyData = objectMapper.readValue(elementsAsString, SafetyData.class);
-			
-			if(safetyData == null) {
-				return new SafetyData();
-			}
-			return safetyData;
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
-		}
-	}
 	
-	public boolean add(MedicalRecord medicalRecord) throws IOException {
-		final SafetyData saftyData = getSafetyData();
-		List<MedicalRecord> medicalRecords = saftyData.getMedicalRecords();
-		if (medicalRecords == null) {
-			medicalRecords = new ArrayList<>();
-		}
-		medicalRecords.add(medicalRecord);
-		saftyData.setMedicalRecords(medicalRecords);
-		
-		// save dans le fichier JSON
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource("safetyAlertsData.json").getFile());
-		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-		writer.write(objectMapper.writeValueAsString(saftyData));
-		writer.close();
-		
-		return true;
-	}
-	
-	
-	
-	public boolean delete(String firstName, String lastName) throws JsonProcessingException, IOException {
-		final SafetyData saftyData = getSafetyData();
-		List<MedicalRecord> medicalRecords = saftyData.getMedicalRecords();
-		if (medicalRecords == null) {
-			medicalRecords = new ArrayList<>();
-		}
-		
-		List<MedicalRecord> newMedicalRecords = medicalRecords.stream() // java stream pour boucler sur une liste
-		.filter(medicalRecord -> !firstName.equalsIgnoreCase(medicalRecord.getFirstName()) // éliminer la personne qui match
-		&& !lastName.equalsIgnoreCase(medicalRecord.getLastName()))	
-		.collect(Collectors.toList());
-		
-		saftyData.setMedicalRecords(newMedicalRecords); // remettre la liste des personnes modifiées dans l'objet safetyData
-		
-		// save dans le fichier JSON
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource("safetyAlertsData.json").getFile());
-		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-		writer.write(objectMapper.writeValueAsString(saftyData));
-		writer.close();
-		
-		return true;
-	}
-	}
-
-
-

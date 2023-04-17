@@ -4,6 +4,10 @@ package com.safetynet.alerts.controller;
 import java.io.IOException;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.safetynet.alerts.model.Person;
@@ -26,29 +31,34 @@ public class PersonController {
 	@Autowired
 	private PersonService personService;
 	
-	@GetMapping("/findAll")
-	public List<Person> findAll() {
-		return personService.findAll();
-	}
-	
-	
-	
-	 @PutMapping("/update")
-	    public boolean updatePerson( @RequestBody final Person personToUpdate) {
+	 @PostMapping("/person")
+	    public void createPerson(
+	             @RequestBody final Map<String, String> personToCreate, final HttpServletResponse response) {
+	        Person personsCreated = personService.addPerson(personToCreate);
 
-		 return  personService.updatePerson(personToUpdate);
-		}
+	        }
+	    
+	
+	
+	
+	 @PutMapping("/person")
+	    public void updatePerson( @RequestBody final Person personToUpdate,
+	                             final HttpServletResponse response) {
+
+		 boolean isUpdated = personService.updatePerson(personToUpdate);
+	    }
 	 
 	        
-	@PostMapping("/add")
-	public boolean add(@RequestBody Person person) throws IOException {
-		return personService.add(person);
-	}
-	
-	@DeleteMapping("delete")
-	public boolean delete(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) throws JsonProcessingException, IOException {
-		return personService.delete(firstName,  lastName);
-	}
 	
 	
-}
+	 @DeleteMapping("/person")
+	    public void delete( @RequestBody final Person personToDelete,
+	                             final HttpServletResponse response) throws JsonProcessingException, IOException {
+
+	        boolean isDeleted = personService.delete(personToDelete);
+
+	        
+	        }
+	    }
+	
+	

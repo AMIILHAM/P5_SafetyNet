@@ -1,26 +1,21 @@
 package com.safetynet.alerts.model;
 
+
+
 import java.util.List;
+import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class SafetyData {
 
 	private List<Person> persons;
-	private List<Firestation> firestations;
+	 private Map<String, Firestation> firestations;
 	private List<MedicalRecord> medicalRecords;
-	
-	public List<Person> getPersons() {
-		return persons;
-	}
-	public void setPersons(List<Person> persons) {
-		this.persons = persons;
-	}
-	public List<Firestation> getFirestations() {
+	public Map<String, Firestation> getFirestations() {
 		return firestations;
 	}
-	public void setFirestations(List<Firestation> firestations) {
+	public void setFirestations(Map<String, Firestation> firestations) {
 		this.firestations = firestations;
 	}
 	public List<MedicalRecord> getMedicalRecords() {
@@ -29,5 +24,17 @@ public class SafetyData {
 	public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
 		this.medicalRecords = medicalRecords;
 	}
+	public List<Person> getPersons() {
+		return persons;
+	}
+	public void setPersons(List<Person> persons) {
+		this.persons = persons;
+	}
+
+	
+	
+
 	
 }
+	
+	

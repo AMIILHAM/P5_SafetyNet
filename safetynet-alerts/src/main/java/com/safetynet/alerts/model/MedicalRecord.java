@@ -6,7 +6,7 @@ public class MedicalRecord {
 
 	private String firstName;
 	private String lastName;
-	private String birthdate;
+	private String birthday;
 	private List<String> medications;
 	private List<String> allergies;
 	public String getFirstName() {
@@ -22,10 +22,10 @@ public class MedicalRecord {
 		this.lastName = lastName;
 	}
 	public String getBirthdate() {
-		return birthdate;
+		return birthday;
 	}
-	public void setBirthdate(String birthdate) {
-		this.birthdate = birthdate;
+	public void setBirthdate(String birthday) {
+		this.birthday = birthday;
 	}
 	public List<String> getMedications() {
 		return medications;
@@ -39,6 +39,22 @@ public class MedicalRecord {
 	public void setAllergies(List<String> allergies) {
 		this.allergies = allergies;
 	}
+	
+	public MedicalRecord() {
+    }
+
+    /**
+     * @param personBirthday   String
+     * @param personMedication List
+     * @param personAllergie   List
+     */
+    public MedicalRecord(final String personBirthday,
+                         final List<String> personMedication,
+                         final List<String> personAllergie) {
+        this.birthday = personBirthday;
+        this.medications = personMedication;
+        this.allergies = personAllergie;
+    }
 	
 	
 }
