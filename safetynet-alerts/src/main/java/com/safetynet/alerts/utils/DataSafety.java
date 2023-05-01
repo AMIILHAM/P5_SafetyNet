@@ -3,6 +3,7 @@ package com.safetynet.alerts.utils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import com.jsoniter.any.Any;
 import org.springframework.stereotype.Component;
 
 import com.safetynet.alerts.model.Firestation;
+import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.SafetyData;
 
@@ -24,6 +26,7 @@ public class DataSafety {
 	    private static int personCounter = 0;
 	    private static int fireStationCounter = 0;
 	    private static int medicalRecordCounter = 0;
+	    List<Person> foyer;
 	    
 	    private DataSafety() {
 	    	
@@ -39,9 +42,10 @@ public class DataSafety {
 	        // Persons
 	        Any anyPerson = any.get("persons");
 	        List<Person> persons = new ArrayList<>();
-	        Map<String, List<Person>> households = new HashMap<>();
+	        Map<String, List<Person>> foyers = new HashMap<>();
 
-	        anyPerson.forEach( personJson -> {
+	        
+	        for (Any personJson : any){
 	            String firstName = personJson.get("firstName").toString();
 	            String lastName = personJson.get("lastName").toString();
 	            String address = personJson.get("address").toString();
@@ -52,27 +56,32 @@ public class DataSafety {
 
 	            Person person = new Person(firstName, lastName, address, city, zip, phone, email);
 	            persons.add(person);
-	            personCounter++;
-
+	            setPersonCounter(getPersonCounter() + 1);
+	            
+	            // cache, remplace containskey ID, plus lisible
+	            List<Person> foyer = foyers.computeIfAbsent(address, temp -> new ArrayList<>());
+	            foyer.add(person);
+	        };
+	    
 	           
 	        // FireStations
-	        Any anyFireStation = any.get("firestations");
+	        Any anyFirestation = any.get("firestations");
 	        Map<String, Firestation> firestations = new HashMap<>();
-	        anyFireStation.forEach(firestationJson -> {
+	        for (Any firestationJson : any) {
 	            String id = firestationJson.get("station").toString();
 	            String address = firestationJson.get("address").toString();
 
-	            FireStation firestation = firestations.computeIfAbsent(id, FireStation::new);
+	            Firestation firestation = firestations.computeIfAbsent(id, Firestation::new);
 	            firestation.addAddress(address);
-	            fireStationCounter++;
-	        });
+	            setFireStationCounter(getFireStationCounter() + 1);
+	        }
 
 	        // MedicalRecord
 	        Any anyMedicalRecord = any.get("medicalrecords");
-	        anyMedicalRecord.forEach(medicalRecordJson -> {
+	        for (Any medicalRecordJson : any) {
 	            String firstName = medicalRecordJson.get("firstName").toString();
 	            String lastName = medicalRecordJson.get("lastName").toString();
-	            String birthdate = medicalRecordJson.get("birthdate").toString();
+	            
 
 	            List<String> medications = new ArrayList<>();
 	            Any anyMedications = medicalRecordJson.get("medications");
@@ -84,16 +93,58 @@ public class DataSafety {
 
 	            // MedicalRecord aux bonnes personnes
 	            searchPerson(firstName, lastName, persons).setMedicalRecord(
-	                    new MedicalRecord(birthdate, medications, allergies));
-	            medicalRecordCounter++;
-	        });
-	        logger.debug("Loaded from a Json file : \r\n"
-	                + (personCounter) + " persons \r\n"
-	                + (fireStationCounter)
-	                + " firestations \r\n"
-	                + (medicalRecordCounter)
-	                + " medicalrecords");
-
-	        return new SafetyData(persons, firestations, households);
-	        		
+	                    new MedicalRecord( null, medications, allergies));
+	            setMedicalRecordCounter(getMedicalRecordCounter() + 1);
+	        }
+	     
+	        
+				return new SafetyData(persons, firestations, foyers);
+			
 }
+		/**
+	     * Search person with first & last name
+	     *
+	     * @param firstName   String
+	     * @param lastName    String
+	     * @param personsList String
+	     * @return person
+	     */
+	    public static Person searchPerson( String firstName ,  String lastName , List<Person> persons) {
+		 
+	        return persons.stream()
+	                .filter(person -> firstName.equals(person.getFirstName())
+	                        && lastName.equals(person.getLastName())).findFirst()
+	                .orElseThrow(() -> new IllegalArgumentException("Name : "
+	                        + firstName.toUpperCase()
+	                        + " "
+	                        + lastName.toUpperCase()
+	                        + "not found"));
+	    }
+
+		public static int getPersonCounter() {
+			return personCounter;
+		}
+
+		public static void setPersonCounter(int personCounter) {
+			DataSafety.personCounter = personCounter;
+		}
+
+		public static int getFireStationCounter() {
+			return fireStationCounter;
+		}
+
+		public static void setFireStationCounter(int fireStationCounter) {
+			DataSafety.fireStationCounter = fireStationCounter;
+		}
+
+		public static int getMedicalRecordCounter() {
+			return medicalRecordCounter;
+		}
+
+		public static void setMedicalRecordCounter(int medicalRecordCounter) {
+			DataSafety.medicalRecordCounter = medicalRecordCounter;
+		}
+    
+}
+
+		

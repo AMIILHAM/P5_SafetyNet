@@ -12,6 +12,14 @@ public class SafetyData {
 	private List<Person> persons;
 	 private Map<String, Firestation> firestations;
 	private List<MedicalRecord> medicalRecords;
+	 private static Map<String, List<Person>> personsPerFoyer;
+
+	    public SafetyData(List<Person> persons2, Map<String, Firestation> firestations2, Map<String, List<Person>> foyers) {
+		// TODO Auto-generated constructor stub
+	}
+		public static Map<String, List<Person>> getFoyers() {
+	        return personsPerFoyer;
+	    }
 	public Map<String, Firestation> getFirestations() {
 		return firestations;
 	}

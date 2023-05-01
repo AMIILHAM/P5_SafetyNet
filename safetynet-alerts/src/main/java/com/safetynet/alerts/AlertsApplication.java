@@ -18,7 +18,7 @@ public class AlertsApplication {
 	private static final Logger logger = LogManager.getLogger(AlertsApplication.class);
 
     @Value("${info.data}")
-    private String dataFileJSON;
+    private String safetyAlertsDataFileJSON;
 
 
     public static void main(final String[] args) {
@@ -35,7 +35,7 @@ public class AlertsApplication {
     @Bean
     public SafetyData jsonFileLoader() throws IOException, NullPointerException {
         logger.debug("Data JSON loaded");
-        return DataSafety.readJsonFile(dataFileJSON);
+        return DataSafety.readJsonFile(safetyAlertsDataFileJSON);
     }
 
 
