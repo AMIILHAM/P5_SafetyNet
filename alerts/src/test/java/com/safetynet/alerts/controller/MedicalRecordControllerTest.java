@@ -7,16 +7,23 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import com.safetynet.alerts.service.FirestationService;
+import com.safetynet.alerts.service.MedicalRecordService;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,14 +33,18 @@ import org.springframework.web.context.WebApplicationContext;
 
 
 
-
+@RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class MidecalRecordControllerTest {
+public class MedicalRecordControllerTest {
+	
+	    @InjectMocks
+	    private MedicalRecordService medicalRecordService;
 
-	 @Autowired
+
+	    @Autowired
 	    private MockMvc mockMvc;
 	    @Autowired
 	    private WebApplicationContext WebContext;
@@ -85,3 +96,4 @@ class MidecalRecordControllerTest {
 	    }
 
 }
+
