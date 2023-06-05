@@ -1,0 +1,152 @@
+2023-06-04 13:19:06.297 DEBUG 11948 --- [main] o.s.w.f.CommonsRequestLoggingFilter      : Filter 'logFilter' configured for use
+2023-06-04 13:19:08.595 ERROR 11948 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2023-06-04 13:20:27.884 ERROR 3564 --- [main] o.s.boot.SpringApplication               : Application run failed
+
+java.lang.IllegalArgumentException: Sources must not be empty
+	at org.springframework.util.Assert.notEmpty(Assert.java:470) ~[spring-core-5.3.26.jar:5.3.26]
+	at org.springframework.boot.SpringApplication.prepareContext(SpringApplication.java:399) [spring-boot-2.7.10.jar:2.7.10]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:306) [spring-boot-2.7.10.jar:2.7.10]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303) [spring-boot-2.7.10.jar:2.7.10]
+	at org.springframework.boot.SpringApplication.main(SpringApplication.java:1319) [spring-boot-2.7.10.jar:2.7.10]
+
+2023-06-04 13:21:33.939 DEBUG 10712 --- [main] o.s.w.f.CommonsRequestLoggingFilter      : Filter 'logFilter' configured for use
+2023-06-04 13:21:59.499  INFO 10712 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-04 13:21:59.501  INFO 10712 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2023-06-04 13:21:59.520 DEBUG 10712 --- [http-nio-8080-exec-2] o.s.w.f.CommonsRequestLoggingFilter      : Before request [DELETE /medicalRecord/delete?firstName=john&lastName=Boyd]
+2023-06-04 13:21:59.616 DEBUG 10712 --- [http-nio-8080-exec-2] o.s.w.f.CommonsRequestLoggingFilter      : After request [DELETE /medicalRecord/delete?firstName=john&lastName=Boyd]
+2023-06-04 13:23:55.456 DEBUG 10712 --- [http-nio-8080-exec-5] o.s.w.f.CommonsRequestLoggingFilter      : Before request [DELETE /medicalRecord/delete?firstName=john&lastName=Boyd]
+2023-06-04 13:23:55.464 ERROR 10712 --- [http-nio-8080-exec-5] c.s.a.c.MedicalRecordController          : 404 - FAILED to delete MedicalRecord for : john BoydWho is this person
+2023-06-04 13:23:55.467 DEBUG 10712 --- [http-nio-8080-exec-5] o.s.w.f.CommonsRequestLoggingFilter      : After request [DELETE /medicalRecord/delete?firstName=john&lastName=Boyd]
+2023-06-04 13:27:45.377 DEBUG 15028 --- [main] o.s.w.f.CommonsRequestLoggingFilter      : Filter 'logFilter' configured for use
+2023-06-04 13:28:13.758  INFO 15028 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-04 13:28:13.761  INFO 15028 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2023-06-04 13:28:13.782 DEBUG 15028 --- [http-nio-8080-exec-2] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator]
+2023-06-04 13:28:13.923 DEBUG 15028 --- [http-nio-8080-exec-2] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator]
+2023-06-04 13:37:35.022 DEBUG 14592 --- [main] o.s.w.f.CommonsRequestLoggingFilter      : Filter 'logFilter' configured for use
+2023-06-04 13:37:42.295  INFO 14592 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-04 13:37:42.297  INFO 14592 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-06-04 13:37:42.318 DEBUG 14592 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator]
+2023-06-04 13:37:42.486 DEBUG 14592 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator]
+2023-06-04 13:37:57.142 DEBUG 14592 --- [http-nio-8080-exec-4] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /person/actuator]
+2023-06-04 13:37:57.164 DEBUG 14592 --- [http-nio-8080-exec-4] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /person/actuator]
+2023-06-04 13:38:15.848 DEBUG 14592 --- [http-nio-8080-exec-2] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator/peron]
+2023-06-04 13:38:15.855 DEBUG 14592 --- [http-nio-8080-exec-2] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator/peron]
+2023-06-04 13:38:21.166 DEBUG 14592 --- [http-nio-8080-exec-5] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator/person]
+2023-06-04 13:38:21.175 DEBUG 14592 --- [http-nio-8080-exec-5] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator/person]
+2023-06-04 13:40:27.479 DEBUG 7356 --- [main] o.s.w.f.CommonsRequestLoggingFilter      : Filter 'logFilter' configured for use
+2023-06-04 13:40:36.440  INFO 7356 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-04 13:40:36.444  INFO 7356 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2023-06-04 13:40:36.462 DEBUG 7356 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator/person]
+2023-06-04 13:40:36.489 DEBUG 7356 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator/person]
+2023-06-04 13:40:44.707 DEBUG 7356 --- [http-nio-8080-exec-2] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /managment/person]
+2023-06-04 13:40:44.715 DEBUG 7356 --- [http-nio-8080-exec-2] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /managment/person]
+2023-06-04 13:41:52.458 DEBUG 9524 --- [main] o.s.w.f.CommonsRequestLoggingFilter      : Filter 'logFilter' configured for use
+2023-06-04 13:42:34.717  INFO 9524 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-04 13:42:34.719  INFO 9524 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2023-06-04 13:42:34.749 DEBUG 9524 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator/person]
+2023-06-04 13:42:34.788 DEBUG 9524 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator/person]
+2023-06-04 13:43:54.929 DEBUG 14540 --- [main] o.s.w.f.CommonsRequestLoggingFilter      : Filter 'logFilter' configured for use
+2023-06-04 13:44:02.635  INFO 14540 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-04 13:44:02.637  INFO 14540 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-06-04 13:44:02.655 DEBUG 14540 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator/person]
+2023-06-04 13:44:02.729 DEBUG 14540 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator/person]
+2023-06-04 13:46:18.902 DEBUG 14540 --- [http-nio-8080-exec-3] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator/]
+2023-06-04 13:46:19.001 DEBUG 14540 --- [http-nio-8080-exec-3] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator/]
+2023-06-04 13:49:37.225 DEBUG 11980 --- [main] o.s.w.f.CommonsRequestLoggingFilter      : Filter 'logFilter' configured for use
+2023-06-04 13:49:44.802  INFO 11980 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-04 13:49:44.804  INFO 11980 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2023-06-04 13:49:44.828 DEBUG 11980 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator/]
+2023-06-04 13:49:44.992 DEBUG 11980 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator/]
+2023-06-04 13:50:03.247 DEBUG 11980 --- [http-nio-8080-exec-2] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator/health]
+2023-06-04 13:50:03.316 DEBUG 11980 --- [http-nio-8080-exec-2] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator/health]
+2023-06-04 13:50:11.538 DEBUG 11980 --- [http-nio-8080-exec-3] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /person/health]
+2023-06-04 13:50:11.558 DEBUG 11980 --- [http-nio-8080-exec-3] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /person/health]
+2023-06-04 13:50:18.293 DEBUG 11980 --- [http-nio-8080-exec-4] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /health]
+2023-06-04 13:50:18.300 DEBUG 11980 --- [http-nio-8080-exec-4] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /health]
+2023-06-04 13:50:21.958 DEBUG 11980 --- [http-nio-8080-exec-5] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator/health]
+2023-06-04 13:50:21.969 DEBUG 11980 --- [http-nio-8080-exec-5] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator/health]
+2023-06-04 13:50:29.609 DEBUG 11980 --- [http-nio-8080-exec-6] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator/]
+2023-06-04 13:50:29.616 DEBUG 11980 --- [http-nio-8080-exec-6] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator/]
+2023-06-04 13:51:33.420 DEBUG 11980 --- [http-nio-8080-exec-10] o.s.w.f.CommonsRequestLoggingFilter      : Before request [DELETE /medicalRecord/delete?firstName=john&lastName=Boyd]
+2023-06-04 13:51:33.438 DEBUG 11980 --- [http-nio-8080-exec-10] o.s.w.f.CommonsRequestLoggingFilter      : After request [DELETE /medicalRecord/delete?firstName=john&lastName=Boyd]
+2023-06-04 13:51:40.713 DEBUG 11980 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator/]
+2023-06-04 13:51:40.720 DEBUG 11980 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator/]
+2023-06-04 13:51:43.317 DEBUG 11980 --- [http-nio-8080-exec-2] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator/]
+2023-06-04 13:51:43.323 DEBUG 11980 --- [http-nio-8080-exec-2] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator/]
+2023-06-04 13:52:20.982 DEBUG 11980 --- [http-nio-8080-exec-3] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator/info]
+2023-06-04 13:52:20.995 DEBUG 11980 --- [http-nio-8080-exec-3] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator/info]
+2023-06-04 13:58:19.804 DEBUG 11980 --- [http-nio-8080-exec-7] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator/]
+2023-06-04 13:58:19.812 DEBUG 11980 --- [http-nio-8080-exec-7] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator/]
+2023-06-04 13:58:22.574 DEBUG 11980 --- [http-nio-8080-exec-8] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator/]
+2023-06-04 13:58:22.582 DEBUG 11980 --- [http-nio-8080-exec-8] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator/]
+2023-06-04 13:59:29.444 DEBUG 11980 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /actuator/health]
+2023-06-04 13:59:29.454 DEBUG 11980 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /actuator/health]
+2023-06-05 13:53:20.015 ERROR 15392 --- [main] c.s.a.controller.FirestationController   : FAILED 404 - No FireStation founded for number : 20. Verify the station number entered.
+2023-06-05 13:53:20.979 ERROR 15392 --- [main] c.s.a.controller.FirestationController   : FAILED - No address for : INCONNU.
+2023-06-05 13:53:21.025 ERROR 15392 --- [main] c.s.alerts.service.FirestationService    : Address enter : [Unknown address, 1] does not exist.
+2023-06-05 13:53:24.869 ERROR 15392 --- [main] c.s.alerts.controller.PersonController   : 404 FAILED - Not found : Paris
+2023-06-05 13:53:40.195 ERROR 15392 --- [main] c.s.alerts.controller.PersonController   : 404 FAILED - No person found with LastName : ami
+2023-06-05 13:53:43.410 ERROR 15392 --- [main] c.s.alerts.controller.PersonController   : 404 FAILED - No foyer with child found : 29 15th St
+2023-06-05 13:53:49.407 ERROR 15392 --- [main] c.s.a.c.MedicalRecordController          : 404 - FAILED to delete MedicalRecord for : lolo bahouWho is this person
+2023-06-05 13:53:51.788 ERROR 15392 --- [main] c.s.a.c.MedicalRecordController          : 404 - FAILED to update MedicalRecord for person: lolo bahou. Unknown
+2023-06-05 13:53:54.474 ERROR 15392 --- [main] c.s.alerts.service.MedicalRecordService  : Error create the MedicalRecord : ilham ami, already existant
+2023-06-05 13:53:54.641 ERROR 15392 --- [main] c.s.alerts.service.AgeCalculatorService  : Person birthday invalid
+2023-06-05 13:53:54.661 ERROR 15392 --- [main] c.s.alerts.service.AgeCalculatorService  : Person birthday invalid
+2023-06-05 13:53:54.663 ERROR 15392 --- [main] c.s.alerts.service.AgeCalculatorService  : Person birthday invalid
+2023-06-05 13:53:59.997 ERROR 15392 --- [main] c.s.alerts.service.MedicalRecordService  : Error create the MedicalRecord : ilham ami, already existant
+2023-06-05 13:54:00.031 ERROR 15392 --- [main] c.s.alerts.service.MedicalRecordService  : Error create the MedicalRecord : John Boyd, already existant
+2023-06-05 13:55:54.691 ERROR 12132 --- [main] c.s.a.controller.FirestationController   : FAILED 404 - No FireStation founded for number : 20. Verify the station number entered.
+2023-06-05 13:55:55.178 ERROR 12132 --- [main] c.s.a.controller.FirestationController   : FAILED - No address for : INCONNU.
+2023-06-05 13:55:55.216 ERROR 12132 --- [main] c.s.alerts.service.FirestationService    : Address enter : [Unknown address, 1] does not exist.
+2023-06-05 13:55:58.063 ERROR 12132 --- [main] c.s.alerts.controller.PersonController   : 404 FAILED - Not found : Paris
+2023-06-05 13:56:11.948 ERROR 12132 --- [main] c.s.alerts.controller.PersonController   : 404 FAILED - No person found with LastName : ami
+2023-06-05 13:56:15.783 ERROR 12132 --- [main] c.s.alerts.controller.PersonController   : 404 FAILED - No foyer with child found : 29 15th St
+2023-06-05 13:56:26.644 ERROR 12132 --- [main] c.s.a.c.MedicalRecordController          : 404 - FAILED to delete MedicalRecord for : lolo bahouWho is this person
+2023-06-05 13:56:28.819 ERROR 12132 --- [main] c.s.a.c.MedicalRecordController          : 404 - FAILED to update MedicalRecord for person: lolo bahou. Unknown
+2023-06-05 13:56:34.074 ERROR 12132 --- [main] c.s.alerts.service.MedicalRecordService  : Error create the MedicalRecord : ilham ami, already existant
+2023-06-05 13:56:34.392 ERROR 12132 --- [main] c.s.alerts.service.AgeCalculatorService  : Person birthday invalid
+2023-06-05 13:56:34.423 ERROR 12132 --- [main] c.s.alerts.service.AgeCalculatorService  : Person birthday invalid
+2023-06-05 13:56:34.426 ERROR 12132 --- [main] c.s.alerts.service.AgeCalculatorService  : Person birthday invalid
+2023-06-05 13:56:41.884 ERROR 12132 --- [main] c.s.alerts.service.MedicalRecordService  : Error create the MedicalRecord : ilham ami, already existant
+2023-06-05 13:56:41.931 ERROR 12132 --- [main] c.s.alerts.service.MedicalRecordService  : Error create the MedicalRecord : John Boyd, already existant
+2023-06-05 13:57:07.110 ERROR 16048 --- [main] c.s.a.c.FirestationController            : FAILED 404 - No FireStation founded for number : 20. Verify the station number entered.
+2023-06-05 13:57:08.664 ERROR 16048 --- [main] c.s.a.c.FirestationController            : FAILED - No address for : INCONNU.
+2023-06-05 13:57:08.800 ERROR 16048 --- [main] c.s.a.s.FirestationService               : Address enter : [Unknown address, 1] does not exist.
+2023-06-05 13:57:08.924 ERROR 16048 --- [main] c.s.a.c.MedicalRecordController          : 404 - FAILED to delete MedicalRecord for : lolo bahouWho is this person
+2023-06-05 13:57:12.862 ERROR 16048 --- [main] c.s.a.c.MedicalRecordController          : 404 - FAILED to update MedicalRecord for person: lolo bahou. Unknown
+2023-06-05 13:57:16.671 ERROR 16048 --- [main] c.s.a.s.MedicalRecordService             : Error create the MedicalRecord : ilham ami, already existant
+2023-06-05 13:57:22.485 ERROR 16048 --- [main] c.s.a.c.PersonController                 : 404 FAILED - Not found : Paris
+2023-06-05 13:57:34.166 ERROR 16048 --- [main] c.s.a.c.PersonController                 : 404 FAILED - No person found with LastName : ami
+2023-06-05 13:57:36.108 ERROR 16048 --- [main] c.s.a.c.PersonController                 : 404 FAILED - No foyer with child found : 29 15th St
+2023-06-05 13:57:38.358 ERROR 16048 --- [main] c.s.a.s.AgeCalculatorService             : Person birthday invalid
+2023-06-05 13:57:38.404 ERROR 16048 --- [main] c.s.a.s.AgeCalculatorService             : Person birthday invalid
+2023-06-05 13:57:38.409 ERROR 16048 --- [main] c.s.a.s.AgeCalculatorService             : Person birthday invalid
+2023-06-05 13:57:41.327 ERROR 16048 --- [main] c.s.a.s.MedicalRecordService             : Error create the MedicalRecord : ilham ami, already existant
+2023-06-05 13:57:41.370 ERROR 16048 --- [main] c.s.a.s.MedicalRecordService             : Error create the MedicalRecord : John Boyd, already existant
+2023-06-05 14:11:52.396 ERROR 3896 --- [main] c.s.a.c.FirestationController            : FAILED 404 - No FireStation founded for number : 20. Verify the station number entered.
+2023-06-05 14:11:53.709 ERROR 3896 --- [main] c.s.a.c.FirestationController            : FAILED - No address for : INCONNU.
+2023-06-05 14:11:53.757 ERROR 3896 --- [main] c.s.a.s.FirestationService               : Address enter : [Unknown address, 1] does not exist.
+2023-06-05 14:11:53.916 ERROR 3896 --- [main] c.s.a.c.MedicalRecordController          : 404 - FAILED to delete MedicalRecord for : lolo bahouWho is this person
+2023-06-05 14:11:57.045 ERROR 3896 --- [main] c.s.a.c.MedicalRecordController          : 404 - FAILED to update MedicalRecord for person: lolo bahou. Unknown
+2023-06-05 14:12:00.537 ERROR 3896 --- [main] c.s.a.s.MedicalRecordService             : Error create the MedicalRecord : ilham ami, already existant
+2023-06-05 14:12:06.441 ERROR 3896 --- [main] c.s.a.c.PersonController                 : 404 FAILED - Not found : Paris
+2023-06-05 14:12:17.330 ERROR 3896 --- [main] c.s.a.c.PersonController                 : 404 FAILED - No person found with LastName : ami
+2023-06-05 14:12:19.451 ERROR 3896 --- [main] c.s.a.c.PersonController                 : 404 FAILED - No foyer with child found : 29 15th St
+2023-06-05 14:12:21.723 ERROR 3896 --- [main] c.s.a.s.AgeCalculatorService             : Person birthday invalid
+2023-06-05 14:12:21.758 ERROR 3896 --- [main] c.s.a.s.AgeCalculatorService             : Person birthday invalid
+2023-06-05 14:12:21.766 ERROR 3896 --- [main] c.s.a.s.AgeCalculatorService             : Person birthday invalid
+2023-06-05 14:12:25.362 ERROR 3896 --- [main] c.s.a.s.MedicalRecordService             : Error create the MedicalRecord : ilham ami, already existant
+2023-06-05 14:12:25.431 ERROR 3896 --- [main] c.s.a.s.MedicalRecordService             : Error create the MedicalRecord : John Boyd, already existant

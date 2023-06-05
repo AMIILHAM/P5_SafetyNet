@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 
 
-@Component
 @SpringBootApplication
 public class AlertsApplication {
 

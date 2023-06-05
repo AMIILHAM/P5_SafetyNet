@@ -50,7 +50,7 @@ public class PersonControllerTest {
     @Tag("CreatePerson")
     @DisplayName("Create Person OK when all informations are correct")
     void createPersonOkWhenAllInformationsAreCorrect() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/person/person")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/person/add")
                         .contentType(APPLICATION_JSON)
                         .content("{\"firstName\": \"ilham\",\"lastName\": \"ami\",\"address\": \"magny les hameaux\",\"city\": \"idf\",\"zip\": \"78114\",\"phone\": \"88888888\",\"email\": \"ami.ilham10@gmail.com\"}")
                         .accept(APPLICATION_JSON))
@@ -62,7 +62,7 @@ public class PersonControllerTest {
     @Tag("UpdatePerson")
     @DisplayName("Update Person OK when Person exist")
     void updatePersonOkWhenPersonExist() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/person/person")
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/person/update")
                         .contentType(APPLICATION_JSON)
                         .content("{\"firstName\": \"Foster\",\"lastName\": \"Shepard\",\"address\": \"748 Townings Dr\",\"city\": \"Culver\",\"zip\": \"97451\",\"phone\": \"841-874-6544\",\"email\": \"jaboyd@email.com\"}")
                         .accept(APPLICATION_JSON))
@@ -77,7 +77,7 @@ public class PersonControllerTest {
         Person person = new Person();
         person.setFirstName("jule");
         person.setLastName("Cooper");
-        this.mockMvc.perform(MockMvcRequestBuilders.delete("/person/person")
+        this.mockMvc.perform(MockMvcRequestBuilders.delete("/person/delete")
                         .contentType(APPLICATION_JSON)
                         .content(asJsonString(person))
                         .accept(APPLICATION_JSON))
@@ -101,8 +101,8 @@ public class PersonControllerTest {
                         .contentType(APPLICATION_JSON).param("city", "Culver"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
-                        "[\"jaboyd@email.com\",\"drk@email.com\",\"tenz@email.com\",\"jaboyd@email.com\",\"jaboyd@email.com\",\"drk@email.com\",\"tenz@email.com\",\"jaboyd@email.com\",\"jaboyd@email.com\",\"tcoop@ymail.com\",\"lily@email.com\",\"soph@email.com\",\"ward@email.com\",\"zarc@email.com\",\"reg@email.com\",\"jpeter@email.com\",\"jpeter@email.com\",\"aly@imail.com\",\"bstel@email.com\",\"ssanw@email.com\",\"bstel@email.com\",\"clivfd@ymail.com\",\"gramps@email.com\"]"))
-                .andExpect(jsonPath("$.length()", is(23)));
+                		 "[\"drk@email.com\",\"soph@email.com\",\"reg@email.com\",\"jaboyd@email.com\",\"bstel@email.com\",\"clivfd@ymail.com\",\"jpeter@email.com\",\"aly@imail.com\",\"ssanw@email.com\",\"gramps@email.com\",\"zarc@email.com\",\"ward@email.com\",\"tcoop@ymail.com\",\"tenz@email.com\",\"lily@email.com\"]"))              		
+                .andExpect(jsonPath("$.length()", is(15)));
     }
 
     @Test

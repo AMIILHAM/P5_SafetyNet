@@ -13,17 +13,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.javaparser.quality.NotNull;
-import com.safetynet.alerts.DTO.FireDTO;
-import com.safetynet.alerts.DTO.FloodDTO;
-import com.safetynet.alerts.DTO.PersonStationCounterDTO;
+import com.safetynet.alerts.dataTransferObject.FireDTO;
+import com.safetynet.alerts.dataTransferObject.FloodDTO;
+import com.safetynet.alerts.dataTransferObject.PersonStationCounterDTO;
 import com.safetynet.alerts.service.FirestationService;
 
 
 @RestController
+@RequestMapping("/firestation")
 public class FirestationController {
 
     private static final Logger logger = LogManager.getLogger(FirestationController.class);
@@ -37,7 +39,7 @@ public class FirestationController {
      * @param stationToCreate Map
      * @return
      */
-    @PostMapping("/firestation")
+    @PostMapping("/add")
     public ResponseEntity<Object> addAddressForFirestation(
              @RequestBody final Map<String, String> stationToCreate) {
 
@@ -57,7 +59,7 @@ public class FirestationController {
      * update address for firestation
      * @param mappingToUpdate Map
      */
-    @PutMapping("/firestation")
+    @PutMapping("/update")
     public void updateAddressForFireStation(
              @RequestBody final Map<String, String> mappingToUpdate) {
 
@@ -77,7 +79,7 @@ public class FirestationController {
      *
      * @param address String
      */
-    @DeleteMapping("/firestation")
+    @DeleteMapping("/delete")
     public void deleteAddressForFireStation(
              @RequestParam final String address) {
 
@@ -97,7 +99,7 @@ public class FirestationController {
      * @param stationNumber String
      * @return firestationDto
      */
-    @GetMapping("/firestation")
+    @GetMapping("/firestationNumber")
     public PersonStationCounterDTO firestationNumber(
             @NotNull @RequestParam(value = "stationNumber") final String stationNumber) {
 

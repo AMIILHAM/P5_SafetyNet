@@ -15,13 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
-import com.safetynet.alerts.DTO.AddressDTO;
-import com.safetynet.alerts.DTO.FireDTO;
-import com.safetynet.alerts.DTO.FloodDTO;
-import com.safetynet.alerts.DTO.FoyersFloodDTO;
-import com.safetynet.alerts.DTO.PersonFloodDTO;
-import com.safetynet.alerts.DTO.PersonStationCounterDTO;
-import com.safetynet.alerts.DTO.PersonStationDTO;
+import com.safetynet.alerts.dataTransferObject.AddressDTO;
+import com.safetynet.alerts.dataTransferObject.FireDTO;
+import com.safetynet.alerts.dataTransferObject.FloodDTO;
+import com.safetynet.alerts.dataTransferObject.FoyersFloodDTO;
+import com.safetynet.alerts.dataTransferObject.PersonFloodDTO;
+import com.safetynet.alerts.dataTransferObject.PersonStationCounterDTO;
+import com.safetynet.alerts.dataTransferObject.PersonStationDTO;
 import com.safetynet.alerts.model.Firestation;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.SafetyData;
@@ -45,7 +45,7 @@ public class FirestationService  {
      */
     public boolean addAddressForFirestation(final Map<String, String> firestationMappingToCreate) {
 
-        try {
+       
             Map<String, Firestation> allFirestationsMapping = safetyData.getSafetyData().getFirestations();
             String newAddress = firestationMappingToCreate.get("address");
             Firestation firestationRecovered = allFirestationsMapping.get(firestationMappingToCreate.get("station"));
@@ -57,9 +57,7 @@ public class FirestationService  {
             }
             firestationRecovered.addAddress(newAddress);
             return true;
-        } catch (NullPointerException np) {
-            throw new NullPointerException("NPE - Verify station number" + np);
-        }
+         
     }
 
     /**
@@ -68,7 +66,7 @@ public class FirestationService  {
      */
     public boolean updateAddressForFirestation(final Map<String, String> firestationMapCreate) {
 
-        try {
+        
             Map<String, Firestation> allFirestationsMapping = safetyData.getSafetyData().getFirestations();
             String address = firestationMapCreate.get("address");
             Firestation firestationNumberRecovered = allFirestationsMapping.get(firestationMapCreate.get("station"));
@@ -88,9 +86,7 @@ public class FirestationService  {
             logger.error("Address enter : {} does not exist.",
                     firestationMapCreate.values());
             return false;
-        } catch (NullPointerException np) {
-            throw new NullPointerException("NPE - Please verify the number station " + np);
-        }
+       
     }
 
     /**
@@ -258,7 +254,7 @@ pompiers
                 return null;
             }
             // regroupe les personnes allant à la même adresse de Firestation
-            Map<AddressDTO, List<PersonFloodDTO>> foyerDTO = new HashMap<>();
+            Map<com.safetynet.alerts.dataTransferObject.AddressDTO, List<PersonFloodDTO>> foyerDTO = new HashMap<>();
             for (Person person : allPersonsList) {
 
                 if (addressesRecovered.contains(person.getAddress())) {
@@ -268,10 +264,10 @@ pompiers
                             person.getMedicalRecord().getAge(),
                             person.getMedicalRecord().getMedications(),
                             person.getMedicalRecord().getAllergies());
-                    AddressDTO addressDTO = new AddressDTO(person.getAddress(), person.getCity(), person.getZip());
+                    com.safetynet.alerts.dataTransferObject.AddressDTO addressDTO = new com.safetynet.alerts.dataTransferObject.AddressDTO(person.getAddress(), person.getCity(), person.getZip());
 
                     boolean isSameHouse = false;
-                    for (Entry<AddressDTO, List<PersonFloodDTO>> entry : foyerDTO.entrySet()) {
+                    for (Entry<com.safetynet.alerts.dataTransferObject.AddressDTO, List<PersonFloodDTO>> entry : foyerDTO.entrySet()) {
                         if (entry.getKey().getAddress().equals(addressDTO.getAddress()) && entry.getKey().getCity()
                                 .equals(addressDTO.getCity()) && entry.getKey().getZip()
                                 .equals(addressDTO.getZip())) {

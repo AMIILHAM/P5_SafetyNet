@@ -3,17 +3,19 @@ package com.safetynet.alerts.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.safetynet.alerts.DTO.ChildAlertDTO;
-import com.safetynet.alerts.DTO.PersonInfoDTO;
+import com.safetynet.alerts.dataTransferObject.ChildAlertDTO;
+import com.safetynet.alerts.dataTransferObject.PersonInfoDTO;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.SafetyData;
 import com.safetynet.alerts.utils.DataSafety;
@@ -25,17 +27,10 @@ public class PersonService {
 	@Autowired
     private DataSafety safetyData;
 	
-	public Person addPerson(final Map<String, String> personToCreate) {
-		
-        Person newPerson = new Person(personToCreate.get("firstName"),
-                personToCreate.get("lastName"),
-                personToCreate.get("address"), personToCreate.get("city"),
-                personToCreate.get("zip"),
-                personToCreate.get("phone"),
-                personToCreate.get("email"));
+public Person addPerson(final Person personToCreate) {
         List<Person> persons = safetyData.getSafetyData().getPersons();
-        persons.add(newPerson);
-		return newPerson;
+        persons.add(personToCreate);
+		return personToCreate;
 	}
 
 	
@@ -64,9 +59,7 @@ public class PersonService {
 	public boolean delete(Person personToDeleted) throws JsonProcessingException, IOException {
 
 		List<Person> persons = safetyData.getSafetyData().getPersons();
-		if (persons == null) {
-			persons = new ArrayList<>();
-		}
+		
 		
 		List<Person> newPersons = persons.stream() // java stream pour boucler sur une liste
 		.filter(person -> !personToDeleted.getFirstName().equalsIgnoreCase(person.getFirstName()) // éliminer la personne qui match
@@ -85,9 +78,9 @@ public class PersonService {
      * @param city String
      * @return personsEmail List
      */
-	public List<String> communityEmail(final String city) {
+	public Set<String> communityEmail(final String city) {
 
-        List<String> personsEmail = new ArrayList<>();
+        Set<String> personsEmail = new HashSet<>();
         List<Person> personsList = safetyData.getSafetyData().getPersons();
 
         for (Person person : personsList) {

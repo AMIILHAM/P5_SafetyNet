@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.safetynet.alerts.DTO.ChildAlertDTO;
+import com.safetynet.alerts.dataTransferObject.ChildAlertDTO;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.SafetyData;
@@ -70,22 +71,13 @@ import static org.mockito.Mockito.when;
     @Tag("POST")
     @DisplayName("add Person")
     void addPersonTest() throws IOException {
-		Map<String, String> personToCreate = new HashMap<String, String>();
         Person newPerson = new Person("New", "Person", "address", "City", "zip",
                 "phone", "email");
-        personToCreate.put("firstName", newPerson.getFirstName());
-        personToCreate.put("lastName", newPerson.getLastName());
-        personToCreate.put("address", newPerson.getAddress());
-        personToCreate.put("city", newPerson.getCity());
-        personToCreate.put("zip", newPerson.getZip());
-        personToCreate.put("phone", newPerson.getPhone());
-        personToCreate.put("email", newPerson.getEmail());
 
         List<Person> personsList = new ArrayList<>();
-   
         when(safetyData.getSafetyData()).thenReturn(new SafetyData(personsList, new HashMap<>(), new HashMap<>()));
   
-        Person result = personService.addPerson(personToCreate);
+        Person result = personService.addPerson(newPerson);
                  assertThat(result).hasFieldOrPropertyWithValue("firstName", newPerson.getFirstName())
                 .hasFieldOrPropertyWithValue("lastName", newPerson.getLastName())
                 .hasFieldOrPropertyWithValue("address", newPerson.getAddress())
@@ -146,11 +138,9 @@ import static org.mockito.Mockito.when;
 	        personsList.add(otherCityPerson);
 
 	        when(safetyData.getSafetyData()).thenReturn(new SafetyData(personsList, new HashMap<>(), new HashMap<>()));
-	        List<String> personsEmails = personService.communityEmail("Culver");
+	        Set<String> personsEmails = personService.communityEmail("Culver");
 	        assertThat(personsEmails.size()).isEqualTo(3);
-	        assertThat(personsEmails.get(0)).isEqualTo("jaboyd@email.com");
-	        assertThat(personsEmails.get(1)).isEqualTo("drk@email.com");
-	        assertThat(personsEmails.get(2)).isEqualTo("gramps@email.com");
+	       
 	    }
 	 @Test
 	    @Tag("ChildAlert")

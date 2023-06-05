@@ -48,7 +48,7 @@ public class FirestationControllerTest {
     @Tag("POST")
     @DisplayName("Add Address OK")
     void existingFireStationAddAddressStatusIsCreated() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/firestation")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/firestation/add")
                         .contentType(APPLICATION_JSON)
                         .content("{\"address\": \"NEW ADDRESS\",\"station\": \"1\"}")
                         .accept(APPLICATION_JSON))
@@ -62,7 +62,7 @@ public class FirestationControllerTest {
     @DisplayName("PhoneAlert OK with correct Station Number")
     void checkIfPhoneAlertOkWithCorrectStationNumber()
             throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/phoneAlert")
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/firestation/phoneAlert")
                         .contentType(APPLICATION_JSON).param("firestation", "1"))
                 .andExpect(status().isOk()).andExpect(content().string(
                         "[\"841-874-6512\",\"841-874-8547\",\"841-874-7462\",\"841-874-7784\",\"841-874-7784\",\"841-874-7784\"]"));
@@ -73,11 +73,11 @@ public class FirestationControllerTest {
     @DisplayName("PhoneAlert ERROR with Unknown Station Number '20'")
     public void checkErrorPhoneAlertWithUnknownStationNumber()
             throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/firestation")
-                        .contentType(APPLICATION_JSON).param("stationNumber", "20")
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/firestation/phoneAlert")
+                        .contentType(APPLICATION_JSON).param("firestation", "20")
                         .accept(APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isOk()).andExpect(jsonPath("$.length()", is(3)));
+                .andExpect(status().isOk()).andExpect(jsonPath("$.length()", is(0)));
     }
 
    
@@ -85,7 +85,7 @@ public class FirestationControllerTest {
     @Tag("Fire")
     @DisplayName("Unknown Address when Fire return not found - ERROR")
     void unknownAddressWhenFireReturnNotFoundError() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/fire")
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/firestation/fire")
                         .contentType(APPLICATION_JSON).param("address", "INCONNU"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()", is(0)));
@@ -95,7 +95,7 @@ public class FirestationControllerTest {
     @Tag("Flood")
     @DisplayName("Flood two valid Station Entered '2-3' and return - OK")
     void floodTwoValidStationEnteredAndReturnOk() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/flood/stations")
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/firestation/flood/stations")
                         .contentType(APPLICATION_JSON).param("stations", "2,3"))
                 .andExpect(status().isOk());
     }
@@ -105,7 +105,7 @@ public class FirestationControllerTest {
     @DisplayName("Update Address OK")
     void updateSuccessWithFireStation2AndCheckIsOk()
             throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/firestation")
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/firestation/update")
                         .contentType(APPLICATION_JSON)
                         .content("{\"address\": \"892 Downing Ct\",\"station\": \"2\"}")
                         .accept(APPLICATION_JSON))
@@ -116,7 +116,7 @@ public class FirestationControllerTest {
     @Tag("PUT")
     @DisplayName("Update Address ERROR with unknown Station number")
     void updateAddressErrorWithUnknownStationNumber() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/firestation")
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/firestation/update")
                         .contentType(APPLICATION_JSON) // APPLICATION_JSON_VALUE
                         .content("{\"address\": \"Unknown address\",\"station\": \"1\"}"))
                 .andExpect(status().isOk());
@@ -126,7 +126,7 @@ public class FirestationControllerTest {
     @Tag("DELETE")
     @DisplayName("Delete existing address FireStation OK")
     void deleteExistingAddressFireStationThenReturnOk() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.delete("/firestation")
+        this.mockMvc.perform(MockMvcRequestBuilders.delete("/firestation/delete")
                         .contentType(APPLICATION_JSON).param("address", "951 LoneTree Rd")
                         .accept(APPLICATION_JSON))
                 .andExpect(status().isOk());

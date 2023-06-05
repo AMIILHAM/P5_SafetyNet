@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +16,7 @@ import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.service.MedicalRecordService;
 
 @RestController
+@RequestMapping("/medicalRecord")
 public class MedicalRecordController {
 
     private static final Logger logger = LogManager.getLogger(MedicalRecordController.class);
@@ -28,7 +30,7 @@ public class MedicalRecordController {
      * @param newMedicalRecord MedicalRecord
      * @return
      */
-    @PostMapping("/medicalRecord")
+    @PostMapping("/add")
     public ResponseEntity<Object> createMedicalRecord(
             @RequestBody final MedicalRecord newMedicalRecord) {
 
@@ -50,7 +52,7 @@ public class MedicalRecordController {
      *
      * @param medicalRecord MedicalRecord
      */
-    @PutMapping("/medicalRecord")
+    @PutMapping("/update")
     public void updateMedicalRecord(
              @RequestBody final MedicalRecord medicalRecord) {
 
@@ -72,7 +74,7 @@ public class MedicalRecordController {
      * @param firstName String
      * @param lastName  String
      */
-    @DeleteMapping("/medicalRecord")
+    @DeleteMapping("/delete")
     public void deleteMedicalRecord(
              @RequestParam final String firstName,
              @RequestParam final String lastName) {

@@ -58,7 +58,7 @@ public class MedicalRecordControllerTest {
 	    @Tag("CREATE")
 	    @DisplayName("ERROR CREATE Unknown Person with MedicalRecord")
 	    void errorCreateUnknownPersonWithMedicalRecord() throws Exception {
-	        this.mockMvc.perform(MockMvcRequestBuilders.post("/medicalRecord")
+	        this.mockMvc.perform(MockMvcRequestBuilders.post("/medicalRecord/add")
 	                .contentType(APPLICATION_JSON).content(" { \r\n"
 	                        + "     \"firstName\":\"ilham\", \r\n"
 	                        + "     \"lastName\":\"ami\", \r\n"
@@ -74,7 +74,7 @@ public class MedicalRecordControllerTest {
 	    @Tag("UPDATE")
 	    @DisplayName("UPDATE Person OK with MedicalRecord")
 	    void updatePersonOkWithMedicalRecordAndReturnIsOk() throws Exception {
-	        this.mockMvc.perform(MockMvcRequestBuilders.put("/medicalRecord")
+	        this.mockMvc.perform(MockMvcRequestBuilders.put("/medicalRecord/update")
 	                .contentType(APPLICATION_JSON).content(" { \r\n"
 	                        + "     \"firstName\":\"lolo\", \r\n"
 	                        + "     \"lastName\":\"bahou\", \r\n"
@@ -86,11 +86,12 @@ public class MedicalRecordControllerTest {
 	                .andDo(MockMvcResultHandlers.print())
 	                .andExpect(status().isOk());
 	    }
+	    
 	    @Test
 	    @Tag("DELETE")
 	    @DisplayName("DELETE Person OK when is in the list")
 	    void deletePersonOkWhenMedicalRecordIsDeleteAndInTheList() throws Exception {
-	        this.mockMvc.perform(MockMvcRequestBuilders.delete("/medicalRecord")
+	        this.mockMvc.perform(MockMvcRequestBuilders.delete("/medicalRecord/delete")
 	                .param("firstName", "lolo").param("lastName", "bahou"))
 	                .andExpect(status().isOk());
 	    }

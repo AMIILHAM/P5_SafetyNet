@@ -2,14 +2,14 @@ package com.safetynet.alerts.controller;
 
 
 import java.io.IOException;
-
 import java.util.List;
-import java.util.Map;
-
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
+import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,25 +21,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.javaparser.quality.NotNull;
-import com.safetynet.alerts.DTO.ChildAlertDTO;
-import com.safetynet.alerts.DTO.PersonInfoDTO;
+import com.safetynet.alerts.dataTransferObject.ChildAlertDTO;
+import com.safetynet.alerts.dataTransferObject.PersonInfoDTO;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.service.PersonService;
 
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping(
+		"/person")
 public class PersonController {
     private static final Logger logger = LogManager.getLogger(PersonController.class);
 
     @Autowired
     private PersonService personService;
 
-    @PostMapping("/person")
-    public ResponseEntity<Object> createPerson(@RequestBody final Map<String, String> personToCreate) {
+    @ReadOperation
+    @PostMapping("/add")
+    public ResponseEntity<Object> createPerson(@RequestBody final Person personToCreate) {
         Person personsCreated = personService.addPerson(personToCreate);
         if (personsCreated != null) {
             logger.info("OK 201 - Create Person POST request for {} {}",
@@ -54,7 +55,7 @@ public class PersonController {
     }
 
 
-    @PutMapping("/person")
+    @PutMapping("/update")
     public ResponseEntity<Object> updatePerson(@RequestBody final Person personToUpdate) {
 
         boolean isUpdated = personService.updatePerson(personToUpdate);
@@ -71,7 +72,7 @@ public class PersonController {
     }
 
 
-    @DeleteMapping("/person")
+    @DeleteMapping("/delete")
     public ResponseEntity<Object> delete(@RequestBody final Person personToDelete) throws JsonProcessingException, IOException {
 
         boolean isDeleted = personService.delete(personToDelete);
@@ -142,10 +143,10 @@ public class PersonController {
      * @return List of communityEmail
      */
     @GetMapping("/communityEmail")
-    public List<String> getCommunityEmail(
+    public Set<String> getCommunityEmail(
             @NotNull @RequestParam(value = "city") final String city) {
 
-        List<String> communityEmail = personService.communityEmail(city);
+        Set<String> communityEmail = personService.communityEmail(city);
 
         if (!communityEmail.isEmpty()) {
             logger.info("OK 200 - CommunityEmail GET request");
@@ -162,3 +163,4 @@ public class PersonController {
 }
 	
 	
+
